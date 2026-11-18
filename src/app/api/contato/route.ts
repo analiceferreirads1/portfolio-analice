@@ -24,14 +24,20 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: 'invalid' }, { status: 400 });
   }
 
-  const webhook = process.env.CONTACT_WEBHOOK_URL;
-  if (!webhook) return NextResponse.json({ ok: false, error: 'off' }, { status: 503 });
+  // Variáveis só do servidor: a chave secreta nunca vai para o navegador.
+  const url = process.env.SUPABASE_URL;
+  const key = process.env.SUPABASE_SECRET_KEY;
+  if (!url || !key) return NextResponse.json({ ok: false, error: 'off' }, { status: 503 });
+
+  // Chaves novas (sb_secret_...) vão só no header apikey; a legada service_role (JWT) também precisa do Bearer.
+  const headers: Record<string, string> = { 'Content-Type': 'application/json', apikey: key, Prefer: 'return=minimal' };
+  if (!key.startsWith('sb_')) headers.Authorization = `Bearer ${key}`;
 
   try {
-    const r = await fetch(webhook, {
+    const r = await fetch(`${url.replace(/\/+$/, '')}/rest/v1/contact_messages`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nome, email, assunto, mensagem, origem: 'site', pagina: str(body.pagina, 500), enviado_em: new Date().toISOString() }),
+      headers,
+      body: JSON.stringify({ name: nome, email, subject: assunto || null, message: mensagem, page: str(body.pagina, 500) || null }),
       signal: AbortSignal.timeout(10_000),
     });
     if (!r.ok) throw new Error(String(r.status));
