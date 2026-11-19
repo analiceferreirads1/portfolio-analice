@@ -95,3 +95,12 @@ SQL migrations live in `supabase/migrations/`. To set up a new Supabase project,
 ## Deployment
 
 Every push to `main` triggers an automatic deploy on Vercel. Before the first deploy, set the three environment variables above in the Vercel project settings (Production). The daily cron is declared in `vercel.json` and registered automatically on each deploy.
+
+## Architecture decisions
+
+Key decisions are recorded as Architecture Decision Records (ADRs) in [`docs/adr/`](docs/adr/):
+
+- [ADR 0001: Store contact form messages in Supabase](docs/adr/0001-store-contact-messages-in-supabase.md)
+- [ADR 0002: Content-Security-Policy without nonces](docs/adr/0002-csp-without-nonces.md)
+- [ADR 0003: Daily keep-alive cron with least privilege](docs/adr/0003-daily-keep-alive-cron.md)
+
