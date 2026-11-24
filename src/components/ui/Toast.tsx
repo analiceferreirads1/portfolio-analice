@@ -14,7 +14,7 @@ type ToastProps = { tone: keyof typeof T; title: string; description: string; on
 export function Toast({ tone, title, description, onClose }: ToastProps) {
   const t = T[tone];
   return (
-    <div role="status" style={{ display: 'flex', alignItems: 'flex-start', gap: 12, width: 360, maxWidth: '100%', padding: '14px 14px 14px 16px', background: 'var(--bg-inverse)', color: 'var(--fg-inverse)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--grafite-700)', boxShadow: 'var(--shadow-inverse)', fontFamily: 'var(--font-sans)' }}>
+    <div role={tone === 'danger' ? 'alert' : 'status'} style={{ display: 'flex', alignItems: 'flex-start', gap: 12, width: 360, maxWidth: '100%', padding: '14px 14px 14px 16px', background: 'var(--bg-inverse)', color: 'var(--fg-inverse)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--grafite-700)', boxShadow: 'var(--shadow-inverse)', fontFamily: 'var(--font-sans)' }}>
       <Icon name={t[0]} size={18} color={t[1]} style={{ marginTop: 1 }} />
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 4, minWidth: 0 }}>
         <span style={{ fontSize: 14, fontWeight: 600, lineHeight: 1.3 }}>{title}</span>
