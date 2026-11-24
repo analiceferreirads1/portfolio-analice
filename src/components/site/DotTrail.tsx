@@ -62,14 +62,12 @@ export function DotTrail({ step = 20, size = 7, hold = 2200, fade = 900, color =
     host.addEventListener('pointerleave', onLeave);
     const onVis = () => { if (!document.hidden && lit.size && !raf) raf = requestAnimationFrame(draw); };
     document.addEventListener('visibilitychange', onVis);
-    const sweep = setInterval(() => { if (lit.size && !raf) raf = requestAnimationFrame(draw); }, 500);
     return () => {
       host.removeEventListener('pointermove', onMove);
       host.removeEventListener('pointerleave', onLeave);
       window.removeEventListener('resize', fit);
       document.removeEventListener('visibilitychange', onVis);
       ro?.disconnect();
-      clearInterval(sweep);
       cancelAnimationFrame(raf);
       lit.clear();
       clear();
