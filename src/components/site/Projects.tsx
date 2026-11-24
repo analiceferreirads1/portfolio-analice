@@ -6,7 +6,8 @@ import { Icon } from '@/components/ui/Icon';
 import { H, siteW } from '@/lib/site';
 
 // Projetos de exemplo, sem links (pendência: projetos reais).
-const PROJECTS = [
+type Project = { t: string; p: string; d: string; href?: string };
+const PROJECTS: Project[] = [
   { t: 'SDR Virtual com IA', p: 'IA + Automação', d: 'Atende e qualifica leads automaticamente, para o time comercial falar com quem está pronto para conversar.' },
   { t: 'Cadência comercial automatizada', p: 'Automação n8n', d: 'Acompanha cada lead no tempo certo, sem depender de lembrete manual ou planilha.' },
   { t: 'IA e automação para o jurídico', p: 'IA + Automação', d: 'Organiza documentos e demandas e tira tarefas operacionais da equipe, que fica com a análise.' },
@@ -33,7 +34,7 @@ export function Projects() {
           {PROJECTS.map((p) => (
             <Card key={p.t} variant="inverse" padding="lg" className="prj" onMouseMove={trackMouse} style={{ display: 'flex', flexDirection: 'column', gap: 14, minHeight: 220 }}>
               <span className="prj-bd" />
-              <span className="prj-go"><Icon name="arrow-up-right" size={16} /></span>
+              {p.href && <span className="prj-go"><Icon name="arrow-up-right" size={16} /></span>}
               <span className="prj-tag" style={{ position: 'relative', font: '500 11px var(--font-mono)', letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--grafite-300)' }}>{p.p}</span>
               <h3 style={H(22, { position: 'relative', color: 'var(--areia-50)', paddingRight: 40 })}>{p.t}</h3>
               <p style={{ position: 'relative', font: 'var(--type-body-sm)', color: 'var(--fg-inverse-2)' }}>{p.d}</p>
