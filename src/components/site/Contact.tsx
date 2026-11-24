@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Input, Select } from '@/components/ui/Fields';
 import { Toast } from '@/components/ui/Toast';
-import { CONTACT, H, openExternal, siteW } from '@/lib/site';
+import { CONTACT, H, siteW } from '@/lib/site';
 
 type ToastState = false | 'ok' | 'err' | 'off';
 
@@ -51,7 +51,7 @@ export function Contact() {
           <h2 style={H(44)}>Vamos conversar sobre o que você quer construir.</h2>
           <p style={{ font: 'var(--type-body-lg)', color: 'var(--fg-2)', maxWidth: 480 }}>Conte a dor, a ideia ou a oportunidade. Respondo com o que dá para construir e o que não dá.</p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
-            <Button size="lg" iconLeft="message-circle" onClick={() => openExternal(CONTACT.wa)}>Falar no WhatsApp</Button>
+            <Button size="lg" iconLeft="message-circle" href={CONTACT.wa}>Falar no WhatsApp</Button>
           </div>
         </div>
         <Card padding="lg" style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>

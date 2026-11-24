@@ -14,34 +14,35 @@ type IconButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'>
   label: string;
   variant?: keyof typeof V;
   size?: keyof typeof SZ;
+  href?: string;
   style?: CSSProperties;
 };
 
-export function IconButton({ icon, label, variant = 'ghost', size = 'md', disabled = false, style, ...rest }: IconButtonProps) {
+export function IconButton({ icon, label, variant = 'ghost', size = 'md', disabled = false, href, style, ...rest }: IconButtonProps) {
   const [h, setH] = useState(false);
   const [p, setP] = useState(false);
   const s = SZ[size];
   const v = V[variant];
-  return (
-    <button
-      type="button"
-      aria-label={label}
-      title={label}
-      disabled={disabled}
-      onMouseEnter={() => setH(true)}
-      onMouseLeave={() => { setH(false); setP(false); }}
-      onMouseDown={() => setP(true)}
-      onMouseUp={() => setP(false)}
-      style={{
-        display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: s[0], height: s[0], padding: 0,
-        borderRadius: 'var(--radius-md)', border: '1px solid ' + v[3], background: h && !disabled ? v[1] : v[0],
-        color: h && variant === 'ghost' ? 'var(--fg-1)' : v[2], cursor: disabled ? 'not-allowed' : 'pointer',
-        opacity: disabled ? 0.45 : 1, transform: p && !disabled ? 'scale(.96)' : 'none',
-        transition: 'background var(--dur-fast) var(--ease-standard), transform var(--dur-fast)', ...style,
-      }}
-      {...rest}
-    >
-      <Icon name={icon} size={s[1]} />
-    </button>
-  );
+  // Peças comuns ao <a> e ao <button>: nome acessível, eventos de mouse e visual.
+  const shared = {
+    'aria-label': label,
+    title: label,
+    onMouseEnter: () => setH(true),
+    onMouseLeave: () => { setH(false); setP(false); },
+    onMouseDown: () => setP(true),
+    onMouseUp: () => setP(false),
+    style: {
+      display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: s[0], height: s[0], padding: 0,
+      borderRadius: 'var(--radius-md)', border: '1px solid ' + v[3], background: h && !disabled ? v[1] : v[0],
+      color: h && variant === 'ghost' ? 'var(--fg-1)' : v[2], cursor: disabled ? 'not-allowed' : 'pointer',
+      opacity: disabled ? 0.45 : 1, transform: p && !disabled ? 'scale(.96)' : 'none',
+      transition: 'background var(--dur-fast) var(--ease-standard), transform var(--dur-fast)', ...style,
+    } as CSSProperties,
+  };
+  // Com href vira link de verdade; link externo abre em nova aba de forma segura.
+  if (href) {
+    const external = href.startsWith('http');
+    return <a href={href} target={external ? '_blank' : undefined} rel={external ? 'noopener noreferrer' : undefined} {...shared}><Icon name={icon} size={s[1]} /></a>;
+  }
+  return <button type="button" disabled={disabled} {...shared} {...rest}><Icon name={icon} size={s[1]} /></button>;
 }

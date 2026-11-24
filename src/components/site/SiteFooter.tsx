@@ -1,7 +1,7 @@
 'use client';
 
 import { IconButton } from '@/components/ui/IconButton';
-import { CONTACT, openExternal, siteW } from '@/lib/site';
+import { CONTACT, siteW } from '@/lib/site';
 import { DotTrail } from './DotTrail';
 import { Lockup } from './Lockup';
 
@@ -15,7 +15,7 @@ export function SiteFooter() {
         <Lockup inverse />
         <a href={'mailto:' + CONTACT.email} style={{ font: '500 13px var(--font-mono)', color: 'var(--areia-50)', textDecoration: 'none' }}>{CONTACT.email}</a>
         <div style={{ display: 'flex', gap: 8 }}>
-          {CONTACT.social.map(([ic, l, u]) => <IconButton key={l} icon={ic} label={l} variant="inverse" onClick={() => openExternal(u)} />)}
+          {CONTACT.social.map(([ic, l, u]) => <IconButton key={l} icon={ic} label={l} variant="inverse" href={u} />)}
         </div>
       </div>
     </footer>

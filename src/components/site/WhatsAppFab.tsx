@@ -1,12 +1,13 @@
 'use client';
 
-import { CONTACT, openExternal } from '@/lib/site';
+import { CONTACT } from '@/lib/site';
 
 export function WhatsAppFab() {
   return (
-    <button
-      type="button"
-      onClick={() => openExternal(CONTACT.wa)}
+    <a
+      href={CONTACT.wa}
+      target="_blank"
+      rel="noopener noreferrer"
       aria-label="Falar no WhatsApp"
       title="Falar no WhatsApp"
       className="af-fab"
@@ -14,6 +15,6 @@ export function WhatsAppFab() {
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src="/icons/whatsapp-ffffff.svg" width="32" height="32" alt="" />
-    </button>
+    </a>
   );
 }

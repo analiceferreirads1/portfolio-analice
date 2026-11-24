@@ -20,40 +20,42 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   iconLeft?: IconName;
   iconRight?: IconName;
   fullWidth?: boolean;
+  href?: string;
   style?: CSSProperties;
 };
 
 export function Button({
   variant = 'primary', size = 'md', iconLeft, iconRight, disabled = false, fullWidth = false,
-  type = 'button', children, style, ...rest
+  type = 'button', href, children, style, ...rest
 }: ButtonProps) {
   const [h, setH] = useState(false);
   const [p, setP] = useState(false);
   const s = SIZES[size];
   const v = V[variant];
   const bg = disabled ? v[0] : p ? v[2] : h ? v[1] : v[0];
-  return (
-    <button
-      type={type}
-      disabled={disabled}
-      onMouseEnter={() => setH(true)}
-      onMouseLeave={() => { setH(false); setP(false); }}
-      onMouseDown={() => setP(true)}
-      onMouseUp={() => setP(false)}
-      style={{
-        display: fullWidth ? 'flex' : 'inline-flex', width: fullWidth ? '100%' : undefined, alignItems: 'center',
-        justifyContent: 'center', gap: s.gap, height: s.h, padding: '0 ' + s.px + 'px', fontFamily: 'var(--font-sans)',
-        fontSize: s.fs, fontWeight: 600, letterSpacing: '-0.005em', lineHeight: 1, color: v[3], background: bg,
-        border: '1px solid ' + (variant === 'secondary' && h && !disabled ? 'var(--border-strong)' : v[4]),
-        borderRadius: 'var(--radius-md)', boxShadow: variant === 'secondary' ? 'var(--shadow-1)' : 'none',
-        cursor: disabled ? 'not-allowed' : 'pointer', opacity: disabled ? 0.45 : 1,
-        transform: p && !disabled ? 'translateY(1px)' : 'none',
-        transition: 'background var(--dur-fast) var(--ease-standard), border-color var(--dur-fast), transform var(--dur-fast)',
-        whiteSpace: 'nowrap', ...style,
-      }}
-      {...rest}
-    >
-      {iconLeft && <Icon name={iconLeft} size={s.ic} />}{children}{iconRight && <Icon name={iconRight} size={s.ic} />}
-    </button>
-  );
+  // Peças comuns ao <a> e ao <button>: eventos de hover e clique, e o visual.
+  const shared = {
+    onMouseEnter: () => setH(true),
+    onMouseLeave: () => { setH(false); setP(false); },
+    onMouseDown: () => setP(true),
+    onMouseUp: () => setP(false),
+    style: {
+      display: fullWidth ? 'flex' : 'inline-flex', width: fullWidth ? '100%' : undefined, alignItems: 'center',
+      justifyContent: 'center', gap: s.gap, height: s.h, padding: '0 ' + s.px + 'px', fontFamily: 'var(--font-sans)',
+      fontSize: s.fs, fontWeight: 600, letterSpacing: '-0.005em', lineHeight: 1, color: v[3], background: bg,
+      border: '1px solid ' + (variant === 'secondary' && h && !disabled ? 'var(--border-strong)' : v[4]),
+      borderRadius: 'var(--radius-md)', boxShadow: variant === 'secondary' ? 'var(--shadow-1)' : 'none',
+      cursor: disabled ? 'not-allowed' : 'pointer', opacity: disabled ? 0.45 : 1,
+      transform: p && !disabled ? 'translateY(1px)' : 'none',
+      transition: 'background var(--dur-fast) var(--ease-standard), border-color var(--dur-fast), transform var(--dur-fast)',
+      whiteSpace: 'nowrap', textDecoration: 'none', ...style,
+    } as CSSProperties,
+  };
+  const content = <>{iconLeft && <Icon name={iconLeft} size={s.ic} />}{children}{iconRight && <Icon name={iconRight} size={s.ic} />}</>;
+  // Com href vira link de verdade. Link externo abre em nova aba sem dar ao outro site acesso à nossa página.
+  if (href) {
+    const external = href.startsWith('http');
+    return <a href={href} target={external ? '_blank' : undefined} rel={external ? 'noopener noreferrer' : undefined} {...shared}>{content}</a>;
+  }
+  return <button type={type} disabled={disabled} {...shared} {...rest}>{content}</button>;
 }

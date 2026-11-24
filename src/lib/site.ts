@@ -25,5 +25,3 @@ export function scrollToId(id: string) {
   const el = document.getElementById(id);
   if (el) window.scrollTo({ top: el.offsetTop - 68, behavior: 'smooth' });
 }
-
-export const openExternal = (u: string) => window.open(u, '_blank', 'noopener');
