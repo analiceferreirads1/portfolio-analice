@@ -4,11 +4,35 @@ export const runtime = 'nodejs';
 
 const ASSUNTOS = ['Automação para minha empresa', 'Oportunidade de trabalho', 'Conteúdo e parceria', 'Outro'];
 const str = (v: unknown, max: number) => (typeof v === 'string' ? v.trim().slice(0, max) : '');
+const MAX_BYTES = 16 * 1024;
+const tooLarge = () => NextResponse.json({ ok: false, error: 'too_large' }, { status: 413 });
+
+// Mesmo site = o host do Origin é igual ao host que recebeu o pedido (vale para produção, preview e localhost).
+const isSameOrigin = (origin: string, host: string | null) => {
+  try {
+    return host !== null && new URL(origin).host === host;
+  } catch {
+    return false;
+  }
+};
 
 export async function POST(req: Request) {
+  // Navegadores sempre enviam Origin: outro site é recusado. Sem Origin (curl, scripts) segue para as demais validações.
+  const origin = req.headers.get('origin');
+  if (origin && !isSameOrigin(origin, req.headers.get('host'))) {
+    return NextResponse.json({ ok: false, error: 'forbidden' }, { status: 403 });
+  }
+
+  // Content-Length é declarado por quem envia: barra cedo os honestos; o tamanho real é medido logo abaixo.
+  if (Number(req.headers.get('content-length') ?? 0) > MAX_BYTES) return tooLarge();
+
   let body: Record<string, unknown>;
   try {
-    body = await req.json();
+    const raw = await req.text();
+    if (new TextEncoder().encode(raw).length > MAX_BYTES) return tooLarge();
+    const parsed: unknown = JSON.parse(raw);
+    if (typeof parsed !== 'object' || parsed === null) throw new Error('not an object');
+    body = parsed as Record<string, unknown>;
   } catch {
     return NextResponse.json({ ok: false, error: 'invalid' }, { status: 400 });
   }
