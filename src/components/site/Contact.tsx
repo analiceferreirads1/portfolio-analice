@@ -67,6 +67,11 @@ export function Contact() {
             {/* Honeypot anti-spam: invisível para pessoas, preenchido por bots */}
             <div className="af-hp" aria-hidden="true"><label>Não preencha<input type="text" name="website" tabIndex={-1} autoComplete="off" /></label></div>
             <Button type="submit" size="lg" iconRight="send" disabled={busy}>{busy ? 'Enviando…' : 'Enviar mensagem'}</Button>
+            {/* Aviso LGPD: finalidade dos dados e como pedir a exclusão */}
+            <p style={{ font: 'var(--type-body-sm)', color: 'var(--fg-3)', margin: 0 }}>
+              Seu nome e e-mail são usados só para responder a esta mensagem. Para pedir a exclusão dos seus dados, escreva para{' '}
+              <a href={`mailto:${CONTACT.email}`} style={{ color: 'inherit', textDecoration: 'underline' }}>{CONTACT.email}</a>.
+            </p>
           </form>
         </Card>
       </div>
