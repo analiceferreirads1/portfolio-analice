@@ -1,5 +1,7 @@
 import type { CSSProperties } from 'react';
 
+export const SITE_URL = 'https://analiceferreira.com.br';
+
 export const siteW: CSSProperties = { maxWidth: 1200, margin: '0 auto', padding: '0 clamp(20px,5vw,40px)', boxSizing: 'border-box' };
 
 /** Títulos fluidos: acima de 26px o tamanho encolhe com a viewport (h1 52px → ~34px em 390px). */
