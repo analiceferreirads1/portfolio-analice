@@ -23,7 +23,7 @@ const WF = {
   h: 470,
   boxes: { trigger: [24, 40, 84, 84, 'd'], agent: [196, 40, 236, 84, 'r'], reply: [530, 40, 84, 84, 'r'] } as Record<BoxKey, [number, number, number, number, 'd' | 'r']>,
   tools: [
-    { cx: 56, t: 'Claude', t2: 'Sonnet 4.6', icon: SI('anthropic', 'F4F3EE'), o: 0 },
+    { cx: 56, t: 'Claude', t2: 'Chat Model', icon: SI('anthropic', 'F4F3EE'), o: 0 },
     { cx: 186, t: 'Remember the', t2: 'conversation', lucide: 'database', o: 1 },
     { cx: 316, t: 'Read pricing', t2: 'and FAQ', m: 'search: page', icon: SI('notion', 'F4F3EE'), o: 2 },
     { cx: 446, t: 'Book a', t2: 'demo call', m: 'create: event', icon: SI('googlecalendar', '4285F4'), o: 2 },
