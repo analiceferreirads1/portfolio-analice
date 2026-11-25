@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Card } from '@/components/ui/Card';
-import { Tabs } from '@/components/ui/Tabs';
+import { Tabs, panelId, tabId } from '@/components/ui/Tabs';
 import { WorkflowNode } from '@/components/ui/WorkflowNode';
 import { H, siteW } from '@/lib/site';
 
@@ -30,9 +30,9 @@ export function Method() {
           <h2 style={H(44)}>Da ideia ao workflow.</h2>
         </div>
         <div style={{ overflowX: 'auto', scrollbarWidth: 'none', margin: '0 -4px', padding: '0 4px' }}>
-          <div style={{ minWidth: 'max-content' }}><Tabs items={TABS} value={tab} onChange={setTab} /></div>
+        <div style={{ minWidth: 'max-content' }}><Tabs items={TABS} value={tab} onChange={setTab} idPrefix="metodo" /></div>
         </div>
-        <div className="ct" style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1fr) minmax(0,1fr)', gap: 48, alignItems: 'center' }}>
+                <div role="tabpanel" id={panelId('metodo')} aria-labelledby={tabId('metodo', tab)} tabIndex={0} className="ct" style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1fr) minmax(0,1fr)', gap: 48, alignItems: 'center' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
             <span style={{ font: '600 clamp(44px,8vw,64px)/1 var(--font-mono)', color: 'var(--coral-200)' }}>{s.n}</span>
             <h3 style={H(32)}>{s.t}</h3>
