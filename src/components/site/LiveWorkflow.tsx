@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Icon, type IconName } from '@/components/ui/Icon';
 
 const N8N_GREEN = '#35B86A';
@@ -54,14 +54,29 @@ const WF_SEG = (() => {
 })();
 
 export function LiveWorkflow({ maxWidth = 760 }: { maxWidth?: number }) {
+  const ref = useRef<HTMLDivElement>(null);
   const [t, setT] = useState(0);
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { setT(WF_SEG.total - 1); return; }
     let raf = 0;
+    let visible = true;
     const t0 = performance.now();
     const loop = (now: number) => { setT((now - t0) % WF_SEG.total); raf = requestAnimationFrame(loop); };
-    raf = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(raf);
+    // Só anima quando a animação está na tela e a aba está aberta.
+    const sync = () => {
+      const run = visible && !document.hidden;
+      if (run && !raf) raf = requestAnimationFrame(loop);
+      if (!run && raf) { cancelAnimationFrame(raf); raf = 0; }
+    };
+    const io = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; sync(); });
+    if (ref.current) io.observe(ref.current);
+    document.addEventListener('visibilitychange', sync);
+    sync();
+    return () => {
+      io.disconnect();
+      document.removeEventListener('visibilitychange', sync);
+      cancelAnimationFrame(raf);
+    };
   }, []);
 
   const P: Record<string, number> = {};
@@ -86,7 +101,7 @@ export function LiveWorkflow({ maxWidth = 760 }: { maxWidth?: number }) {
   const dot = (x: number, y: number) => <circle cx={x} cy={y} r="4" fill="#6B6860" />;
 
   return (
-    <div style={{ width: '100%', maxWidth, margin: '0 auto' }}>
+  <div ref={ref} style={{ width: '100%', maxWidth, margin: '0 auto' }}>
       <svg viewBox={`0 0 ${WF.w} ${WF.h}`} width="100%" role="img" aria-label="Workflow no n8n: agente de IA que qualifica e responde leads no WhatsApp" style={{ display: 'block', overflow: 'visible' }}>
         {MAIN.map((d, i) => <path key={'mb' + i} d={d} stroke="#55534D" strokeWidth="1.5" fill="none" />)}
         {SUBS.map((d, i) => <path key={'sb' + i} d={d} stroke="#55534D" strokeWidth="1.5" strokeDasharray="6 6" fill="none" />)}
