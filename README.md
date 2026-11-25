@@ -45,6 +45,7 @@ flowchart LR
 - **Secrets stay server-side:** keys live in `.env.local` (git-ignored) and in Vercel secret environment variables, never with the `NEXT_PUBLIC_` prefix, so they never reach the browser.
 - **Defense in depth:** the API route validates every field, and the database enforces the same length limits through `CHECK` constraints.
 - **Spam protection:** a hidden honeypot field silently drops bot submissions.
+- **Rate limiting:** a Vercel Firewall rule allows 5 contact submissions per IP every 10 minutes; extra requests get 429 at the edge, before reaching the route ([ADR 0004](docs/adr/0004-rate-limit-with-vercel-firewall.md)).
 - **Security headers:** Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, and Permissions-Policy on every route, validated in production with `curl -I`.
 - **Authenticated cron:** the keep-alive route rejects any request without the correct `CRON_SECRET` (401).
 
@@ -103,4 +104,5 @@ Key decisions are recorded as Architecture Decision Records (ADRs) in [`docs/adr
 - [ADR 0001: Store contact form messages in Supabase](docs/adr/0001-store-contact-messages-in-supabase.md)
 - [ADR 0002: Content-Security-Policy without nonces](docs/adr/0002-csp-without-nonces.md)
 - [ADR 0003: Daily keep-alive cron with least privilege](docs/adr/0003-daily-keep-alive-cron.md)
+- [ADR 0004: Rate limit the contact form with the Vercel Firewall](docs/adr/0004-rate-limit-with-vercel-firewall.md)
 
