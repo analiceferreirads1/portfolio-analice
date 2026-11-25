@@ -118,3 +118,8 @@ h1 em,h2 em,h3 em,.af-em{font-style:normal;color:var(--fg-accent)}
 .af-hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 section[id]{scroll-margin-top:68px}
 
+.prj-link{position:static;margin-top:auto;display:inline-flex;align-items:center;gap:6px;font:600 14px var(--font-sans);color:#E49B7E;text-decoration:none}
+.prj-link::after{content:'';position:absolute;inset:0;border-radius:inherit;z-index:1}
+.prj-link:focus-visible{outline:none}
+.prj:has(.prj-link:focus-visible){outline:2px solid #D97757;outline-offset:4px}
+
