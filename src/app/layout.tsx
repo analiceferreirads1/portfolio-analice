@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Bricolage_Grotesque, Hanken_Grotesk, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
+import { SITE_URL } from '@/lib/site';
 
 const display = Bricolage_Grotesque({ subsets: ['latin'], variable: '--nf-display', display: 'swap' });
 const sans = Hanken_Grotesk({ subsets: ['latin'], variable: '--nf-sans', display: 'swap' });
@@ -10,9 +11,10 @@ const title = 'Analice Ferreira | AI Automation Engineer';
 const description = 'Não apenas uso IA. Eu construo com IA. Aplicações, agentes de IA e automações com n8n que resolvem problemas reais.';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://analiceferreira.com.br'),
+  metadataBase: new URL(SITE_URL),
   title,
   description,
+  alternates: { canonical: SITE_URL },
   openGraph: {
     title,
     description,
