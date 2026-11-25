@@ -19,6 +19,7 @@ export const CONTACT = {
   social: [
     ['linkedin', 'LinkedIn', 'https://www.linkedin.com/in/analiceferreirads/'],
     ['instagram', 'Instagram', 'https://www.instagram.com/analiceferreira_tech/'],
+    ['github', 'GitHub', 'https://github.com/analiceferreirads1'],
   ] as const,
 };
 

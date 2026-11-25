@@ -1,6 +1,6 @@
 import type { CSSProperties, SVGProps } from 'react';
 import {
-  ArrowDown, ArrowRight, ArrowUpRight, Bot, ChevronDown, CircleCheck, CircleX, Database, Info,
+  ArrowDown, ArrowRight, ArrowUpRight, Bot, ChevronDown, CircleCheck, CircleX, Database, Github, Info,
   Instagram, LayoutDashboard, Linkedin, Mail, Menu, MessageCircle, Plus, Send, Slack, Sparkles,
   TriangleAlert, Webhook, Workflow, X, Zap, type LucideIcon,
 } from 'lucide-react';
@@ -8,7 +8,7 @@ import {
 const ICONS = {
   'arrow-down': ArrowDown, 'arrow-right': ArrowRight, 'arrow-up-right': ArrowUpRight, bot: Bot,
   'chevron-down': ChevronDown, 'circle-check': CircleCheck, 'circle-x': CircleX, database: Database,
-  info: Info, instagram: Instagram, 'layout-dashboard': LayoutDashboard, linkedin: Linkedin, mail: Mail,
+  github: Github, info: Info, instagram: Instagram, 'layout-dashboard': LayoutDashboard, linkedin: Linkedin, mail: Mail,
   menu: Menu, 'message-circle': MessageCircle, plus: Plus, send: Send, slack: Slack, sparkles: Sparkles,
   'triangle-alert': TriangleAlert, webhook: Webhook, workflow: Workflow, x: X, zap: Zap,
 } satisfies Record<string, LucideIcon>;
