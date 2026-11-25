@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
+import { ASSUNTOS } from '@/lib/contact';
+import { getSupabase } from '@/lib/supabase';
 
 export const runtime = 'nodejs';
 
-const ASSUNTOS = ['Automação para minha empresa', 'Oportunidade de trabalho', 'Conteúdo e parceria', 'Outro'];
 const str = (v: unknown, max: number) => (typeof v === 'string' ? v.trim().slice(0, max) : '');
 const MAX_BYTES = 16 * 1024;
 const tooLarge = () => NextResponse.json({ ok: false, error: 'too_large' }, { status: 413 });
@@ -48,19 +49,13 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: 'invalid' }, { status: 400 });
   }
 
-  // Variáveis só do servidor: a chave secreta nunca vai para o navegador.
-  const url = process.env.SUPABASE_URL;
-  const key = process.env.SUPABASE_SECRET_KEY;
-  if (!url || !key) return NextResponse.json({ ok: false, error: 'off' }, { status: 503 });
-
-  // Chaves novas (sb_secret_...) vão só no header apikey; a legada service_role (JWT) também precisa do Bearer.
-  const headers: Record<string, string> = { 'Content-Type': 'application/json', apikey: key, Prefer: 'return=minimal' };
-  if (!key.startsWith('sb_')) headers.Authorization = `Bearer ${key}`;
+    const supabase = getSupabase();
+  if (!supabase) return NextResponse.json({ ok: false, error: 'off' }, { status: 503 });
 
   try {
-    const r = await fetch(`${url.replace(/\/+$/, '')}/rest/v1/contact_messages`, {
+    const r = await fetch(`${supabase.restUrl}/contact_messages`, {
       method: 'POST',
-      headers,
+      headers: { ...supabase.headers, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
       body: JSON.stringify({ name: nome, email, subject: assunto || null, message: mensagem, page: str(body.pagina, 500) || null }),
       signal: AbortSignal.timeout(10_000),
     });

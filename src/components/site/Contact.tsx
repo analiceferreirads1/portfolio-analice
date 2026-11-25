@@ -6,6 +6,7 @@ import { Card } from '@/components/ui/Card';
 import { Input, Select } from '@/components/ui/Fields';
 import { Toast } from '@/components/ui/Toast';
 import { CONTACT, H, siteW } from '@/lib/site';
+import { ASSUNTOS } from '@/lib/contact';
 
 type ToastState = false | 'ok' | 'err' | 'off';
 
@@ -59,7 +60,7 @@ export function Contact() {
             <h3 style={H(22)}>Envie uma mensagem</h3>
             <Input label="Nome" name="nome" placeholder="Seu nome" required maxLength={120} />
             <Input label="E-mail" name="email" type="email" placeholder="voce@empresa.com" iconLeft="mail" required maxLength={200} />
-            <Select label="Assunto" name="assunto" placeholder="Selecione" defaultValue="" options={['Automação para minha empresa', 'Oportunidade de trabalho', 'Conteúdo e parceria', 'Outro']} />
+            <Select label="Assunto" name="assunto" placeholder="Selecione" defaultValue="" options={ASSUNTOS} />
             <label style={{ display: 'flex', flexDirection: 'column', gap: 6, font: '500 13px var(--font-sans)', color: 'var(--fg-1)' }}>
               Mensagem
               <textarea className="af-ta" name="mensagem" required maxLength={4000} placeholder="Descreva o processo, a dor ou a ideia." style={taStyle} />
