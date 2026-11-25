@@ -22,9 +22,3 @@ export const CONTACT = {
     ['github', 'GitHub', 'https://github.com/analiceferreirads1'],
   ] as const,
 };
-
-/** Rola até a seção descontando a altura do header sticky (68px). */
-export function scrollToId(id: string) {
-  const el = document.getElementById(id);
-  if (el) window.scrollTo({ top: el.offsetTop - 68, behavior: 'smooth' });
-}

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { IconButton } from '@/components/ui/IconButton';
-import { scrollToId, siteW } from '@/lib/site';
+import { siteW } from '@/lib/site';
 import { Lockup } from './Lockup';
 
 const NAV = [['O que faço', 'servicos'], ['Projetos', 'projetos'], ['Como construo', 'metodo'], ['Sobre', 'sobre'], ['FAQ', 'faq']] as const;
@@ -11,7 +11,6 @@ const NAV = [['O que faço', 'servicos'], ['Projetos', 'projetos'], ['Como const
 export function SiteNav() {
   const [act, setAct] = useState('');
   const [menu, setMenu] = useState(false);
-  const toContact = () => scrollToId('contato');
 
   useEffect(() => {
     const els = NAV.map(([, id]) => document.getElementById(id)).filter((e): e is HTMLElement => !!e);
@@ -41,7 +40,7 @@ export function SiteNav() {
           {NAV.map(([l, id]) => (
             <a key={id} href={'#' + id} className={'nv' + (act === id ? ' on' : '')} aria-current={act === id ? 'true' : undefined} style={{ font: '500 14px var(--font-sans)', color: 'var(--fg-2)', textDecoration: 'none', whiteSpace: 'nowrap' }}>{l}</a>
           ))}
-          <span className="nv-cta" style={{ display: 'inline-flex' }}><Button size="sm" variant="inverse" onClick={toContact}>Contato</Button></span>
+          <span className="nv-cta" style={{ display: 'inline-flex' }}><Button size="sm" variant="inverse" href="#contato">Contato</Button></span>
         </nav>
         <span className="nv-mob" style={{ display: 'none' }}>
                     <IconButton id="menu-toggle" aria-controls="menu-mobile" icon={menu ? 'x' : 'menu'} label={menu ? 'Fechar menu' : 'Abrir menu'} size="lg" aria-expanded={menu} onClick={() => setMenu((m) => !m)} />
@@ -52,8 +51,8 @@ export function SiteNav() {
           {NAV.map(([l, id]) => (
             <a key={id} href={'#' + id} onClick={() => setMenu(false)} style={{ font: '500 17px var(--font-sans)', color: act === id ? 'var(--fg-1)' : 'var(--fg-2)', textDecoration: 'none', padding: '14px 0', borderBottom: '1px solid var(--border-1)' }}>{l}</a>
           ))}
-          <div style={{ paddingTop: 16 }}>
-            <Button size="lg" variant="inverse" fullWidth onClick={() => { setMenu(false); toContact(); }}>Contato</Button>
+                    <div style={{ paddingTop: 16 }} onClick={() => setMenu(false)}>
+            <Button size="lg" variant="inverse" fullWidth href="#contato">Contato</Button>
           </div>
         </nav>
       )}
