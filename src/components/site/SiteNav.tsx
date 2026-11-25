@@ -20,6 +20,19 @@ export function SiteNav() {
     return () => io.disconnect();
   }, []);
 
+    // Menu aberto: foco no primeiro link; Esc fecha e devolve o foco ao botão do menu.
+  useEffect(() => {
+    if (!menu) return;
+    document.querySelector<HTMLElement>('#menu-mobile a')?.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return;
+      setMenu(false);
+      document.getElementById('menu-toggle')?.focus();
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [menu]);
+
   return (
     <header style={{ position: 'sticky', top: 0, zIndex: 20, background: 'rgba(244,243,238,.88)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', borderBottom: '1px solid var(--border-1)' }}>
       <div style={{ ...siteW, height: 68, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -31,11 +44,11 @@ export function SiteNav() {
           <span className="nv-cta" style={{ display: 'inline-flex' }}><Button size="sm" variant="inverse" onClick={toContact}>Contato</Button></span>
         </nav>
         <span className="nv-mob" style={{ display: 'none' }}>
-          <IconButton icon={menu ? 'x' : 'menu'} label={menu ? 'Fechar menu' : 'Abrir menu'} size="lg" aria-expanded={menu} onClick={() => setMenu((m) => !m)} />
+                    <IconButton id="menu-toggle" aria-controls="menu-mobile" icon={menu ? 'x' : 'menu'} label={menu ? 'Fechar menu' : 'Abrir menu'} size="lg" aria-expanded={menu} onClick={() => setMenu((m) => !m)} />
         </span>
       </div>
       {menu && (
-        <nav className="nv-panel" aria-label="Menu" style={{ borderTop: '1px solid var(--border-1)', background: 'var(--bg-canvas)', padding: '8px clamp(20px,5vw,40px) 20px', display: 'flex', flexDirection: 'column' }}>
+        <nav id="menu-mobile" className="nv-panel" aria-label="Menu" style={{ borderTop: '1px solid var(--border-1)', background: 'var(--bg-canvas)', padding: '8px clamp(20px,5vw,40px) 20px', display: 'flex', flexDirection: 'column' }}>
           {NAV.map(([l, id]) => (
             <a key={id} href={'#' + id} onClick={() => setMenu(false)} style={{ font: '500 17px var(--font-sans)', color: act === id ? 'var(--fg-1)' : 'var(--fg-2)', textDecoration: 'none', padding: '14px 0', borderBottom: '1px solid var(--border-1)' }}>{l}</a>
           ))}
